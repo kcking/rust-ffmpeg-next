@@ -1,6 +1,19 @@
 use ffi::AVChromaLocation::*;
 use ffi::*;
 
+/**
+ * An enum representation of AV locations:
+ *
+ * Unspecified => AVCHROMA_LOC_UNSPECIFIED
+ * Left        => AVCHROMA_LOC_LEFT
+ * Center      => AVCHROMA_LOC_CENTER
+ * TopLeft     => AVCHROMA_LOC_TOPLEFT
+ * Top         => AVCHROMA_LOC_TOP
+ * BottomLeft  => AVCHROMA_LOC_BOTTOMLEFT
+ * Bottom      => AVCHROMA_LOC_BOTTOM
+ *
+ * Note: AVCHROMA_LOC_NB also corresponds to Unspecified.
+ */
 #[derive(Eq, PartialEq, Clone, Copy, Debug)]
 pub enum Location {
     Unspecified,
