@@ -6,6 +6,7 @@ use std::ops::Deref;
 use super::immutable;
 use ffi::*;
 
+/** A mutable `Ref` wrapper around a `*mut AVDictionary` pointer. */
 pub struct Ref<'a> {
     ptr: *mut AVDictionary,
     imm: immutable::Ref<'a>,
@@ -14,6 +15,11 @@ pub struct Ref<'a> {
 }
 
 impl<'a> Ref<'a> {
+    /**
+     * Wrap a `*mut AVDictionary` into a `Ref`.
+     * Note that this also internally wraps an immutable `Ref`. To use `get` on
+     * this immutable dictionary, you can deref the `Mut` into a regular `Ref`.
+     * */
     pub unsafe fn wrap(ptr: *mut AVDictionary) -> Self {
         Ref {
             ptr,
@@ -28,6 +34,7 @@ impl<'a> Ref<'a> {
 }
 
 impl<'a> Ref<'a> {
+    /** Set `key` in dictionary to `value` */
     pub fn set(&mut self, key: &str, value: &str) {
         unsafe {
             let key = CString::new(key).unwrap();
@@ -47,6 +54,7 @@ impl<'a> Ref<'a> {
 impl<'a> Deref for Ref<'a> {
     type Target = immutable::Ref<'a>;
 
+    /** deref turns a `Mut` into a `Ref`. */
     fn deref(&self) -> &Self::Target {
         &self.imm
     }

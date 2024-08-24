@@ -7,6 +7,8 @@ use std::str::from_utf8_unchecked;
 use super::{Iter, Owned};
 use ffi::*;
 
+/** A wrapper around a `*const AVDictionary` from `ffmpeg_sys_next`.
+ * For a mutable version of this, see `dictionary::Mut`. */
 pub struct Ref<'a> {
     ptr: *const AVDictionary,
 
@@ -14,6 +16,7 @@ pub struct Ref<'a> {
 }
 
 impl<'a> Ref<'a> {
+    /** Wrap a AVDictionary pointer into a Ref. */
     pub unsafe fn wrap(ptr: *const AVDictionary) -> Self {
         Ref {
             ptr,
@@ -27,6 +30,7 @@ impl<'a> Ref<'a> {
 }
 
 impl<'a> Ref<'a> {
+    /** Get the value matching `key` from the dictionary. */
     pub fn get(&'a self, key: &str) -> Option<&'a str> {
         unsafe {
             let key = CString::new(key).unwrap();
