@@ -7,11 +7,13 @@ use std::str::from_utf8_unchecked;
 use ffi::*;
 use libc::{c_char, c_int};
 
-// Export POSIX error codes so that users can do something like
-//
-//   if error == (Error::Other { errno: EAGAIN }) {
-//       ...
-//   }
+/**
+ * Export POSIX error codes so that users can do something like
+ *
+ *   if error == (Error::Other { errno: EAGAIN }) {
+ *       ...
+ *   }
+ */
 pub use libc::{
     E2BIG, EACCES, EADDRINUSE, EADDRNOTAVAIL, EAFNOSUPPORT, EAGAIN, EALREADY, EBADF, EBADMSG,
     EBUSY, ECANCELED, ECHILD, ECONNABORTED, ECONNREFUSED, ECONNRESET, EDEADLK, EDESTADDRREQ, EDOM,
@@ -26,20 +28,37 @@ pub use libc::{
 
 #[derive(Copy, Clone, PartialEq)]
 pub enum Error {
+    /** Internal bug, also see Error::Bug2. `FFERRTAG(0xF8, "BSF")`. */
     Bug,
+    /** This is semantically identical to Error::Bug. It has been introduced in
+     * Libav after our Error::Bug and with a modified value. */
     Bug2,
+    /** Error unknown. Typically from an external library. */
     Unknown,
+    /** Feature is flagged experimental. Set strict_std_compliance if you really
+     * want to use it. */
     Experimental,
     BufferTooSmall,
+    /** End of file. */
     Eof,
+    /** Immediate exit was requested; the called function should not
+     * be restarted. */
     Exit,
+    /** Generic error in an external library. */
     External,
+    /** Invalid data found when processing input. */
     InvalidData,
+    /** Not yet implemented in FFmpeg, patches welcome! */
     PatchWelcome,
 
+    /** Input changed between calls. Reconfiguration is required. (can be OR-ed
+     * with Error::OutputChanged. */
     InputChanged,
+    /** Output changed between calls. Reconfiguration is required. (can be OR-ed
+     * with Error::InputChanged. */
     OutputChanged,
 
+    /** BitStream Filter not found */
     BsfNotFound,
     DecoderNotFound,
     DemuxerNotFound,

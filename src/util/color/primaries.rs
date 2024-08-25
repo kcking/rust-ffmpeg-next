@@ -4,22 +4,39 @@ use std::str::from_utf8_unchecked;
 use ffi::AVColorPrimaries::*;
 use ffi::*;
 
+/** Chromacity coordinates of the source primaries. */
 #[derive(Eq, PartialEq, Clone, Copy, Debug)]
 pub enum Primaries {
     Reserved0,
+    /** Also ITU-R BT1361 / IEC 61966-2-4 / SMPTE RP 177 Annex B. */
     BT709,
     Unspecified,
     Reserved,
+    /** Also FCC Title 47 Code of Federal Regulations 73.682 (a)(20) */
     BT470M,
 
+    /**
+     * Also ITU-R BT601-6 625
+     * / ITU-R BT1358 625
+     * / ITU-R BT1700 625 PAL & SECAM.
+     */
     BT470BG,
+    /** 
+     * Also ITU-R BT601-6 525 / ITU-R BT1358 525 / ITU-R BT1700 NTSC.
+     */
     SMPTE170M,
+    /** Identical to SMPTE170M, also called "SMPTE C" even though it uses D65. */
     SMPTE240M,
+    /** Color filters using Illuminant C. */
     Film,
+    /** ITU-R BT2020. */
     BT2020,
 
+    /** SMPTE ST 428-1 (CIE 1931 XYZ). */
     SMPTE428,
+    /** SMPTE ST 431-2 (2011) / DCI P3. */
     SMPTE431,
+    /** SMPTE ST 432-1 (2010) / P3 D65 / Display P3. */
     SMPTE432,
     #[cfg(not(feature = "ffmpeg_4_3"))]
     JEDEC_P22,

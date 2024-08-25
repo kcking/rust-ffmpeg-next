@@ -4,12 +4,16 @@ use std::str::from_utf8_unchecked;
 use ffi::AVColorSpace::*;
 use ffi::*;
 
+/** enum representation of AVColorSpace, the YUV colorspace type. */
 #[derive(Eq, PartialEq, Clone, Copy, Debug)]
 pub enum Space {
+    /** Coefficients are actually ordered as GBR. */
     RGB,
     BT709,
     Unspecified,
+    /** Reserved for future use by ITU-T and ISO/IEC. */
     Reserved,
+    /** FCC Title 47 Code of federal regulations. */
     FCC,
     BT470BG,
     SMPTE170M,
@@ -19,7 +23,9 @@ pub enum Space {
     BT2020CL,
     SMPTE2085,
 
+    /** Chromacity-derived non-constant luminance system. */
     ChromaDerivedNCL,
+    /** Chromacity-derived constant luminance system. */
     ChromaDerivedCL,
     ICTCP,
 }
@@ -27,6 +33,7 @@ pub enum Space {
 impl Space {
     pub const YCOCG: Space = Space::YCGCO;
 
+    /** Returns the name for provided color space or None if unknown/null. */
     pub fn name(&self) -> Option<&'static str> {
         if *self == Space::Unspecified {
             return None;

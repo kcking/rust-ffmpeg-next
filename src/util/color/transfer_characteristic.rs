@@ -7,23 +7,42 @@ use ffi::*;
 #[derive(Eq, PartialEq, Clone, Copy, Debug)]
 pub enum TransferCharacteristic {
     Reserved0,
+    /** Also ITU-R BT1361. */
     BT709,
     Unspecified,
     Reserved,
+    /** Also ITU-R BT470M / ITU-R BT1700 625 PAL & SECAM. */
     GAMMA22,
+    /** Also ITU-R BT470BG. */
     GAMMA28,
+    /**
+    * Also ITU-R BT601-6 525 or 625
+    * / ITU-R BT1358 525 or 625
+    * / ITU-R BT1700 NTSC.
+    */
     SMPTE170M,
     SMPTE240M,
+    /** Linear transfer characteristics */
     Linear,
+    /** Logarithmic transfer characteristic (100:1 range) */
     Log,
+    /** Logarithmic transfer characteristic (100 * Sqrt(10) : 1 range) */
     LogSqrt,
+    /** IEC 61966-2-4. */
     IEC61966_2_4,
+    /** ITU-R BT1361 Extended Color Gamut. */
     BT1361_ECG,
+    /** IEC 61966-2-1 (sRGB or sYCC). */
     IEC61966_2_1,
+    /** ITU-R BT2020 for 10-bit system. */
     BT2020_10,
+    /** ITU-R BT2020 for 12-bit system. */
     BT2020_12,
+    /** SMPTE ST 2084 for 10-, 12-, 14-, and 16-bit systems. */
     SMPTE2084,
+    /** SMPTE ST 428-1. */
     SMPTE428,
+    /** ARIB STD-B67, known as "Hybrid log-gamma". */
     ARIB_STD_B67,
 }
 
