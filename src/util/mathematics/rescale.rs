@@ -16,6 +16,7 @@ pub trait Rescale {
 }
 
 impl<T: Into<i64> + Clone> Rescale for T {
+    /** Rescale without rounding. */
     fn rescale<S, D>(&self, source: S, destination: D) -> i64
     where
         S: Into<Rational>,
@@ -30,6 +31,7 @@ impl<T: Into<i64> + Clone> Rescale for T {
         }
     }
 
+    /** Rescale with rounding. */
     fn rescale_with<S, D>(&self, source: S, destination: D, rounding: Rounding) -> i64
     where
         S: Into<Rational>,

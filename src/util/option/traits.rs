@@ -8,6 +8,7 @@ use libc::{c_int, c_void};
 use util::format;
 use {ChannelLayout, Error, Rational};
 
+/** Check if we got an error and wrap it, otherwise just `Ok(())`. */
 macro_rules! check {
     ($expr:expr) => {
         match $expr {
