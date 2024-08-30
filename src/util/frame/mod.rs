@@ -14,6 +14,7 @@ use ffi::*;
 use libc::c_int;
 use {Dictionary, DictionaryRef};
 
+/** Packet data from a `Frame`. */
 #[derive(PartialEq, Eq, Copy, Clone, Debug)]
 pub struct Packet {
     pub duration: i64,
@@ -24,6 +25,8 @@ pub struct Packet {
     pub dts: i64,
 }
 
+/** Representation of a frame in audio or video.
+ * Just a wrapper around a `*mut AVFrame`. */
 #[derive(PartialEq, Eq)]
 pub struct Frame {
     ptr: *mut AVFrame,
@@ -35,11 +38,13 @@ unsafe impl Send for Frame {}
 unsafe impl Sync for Frame {}
 
 impl Frame {
+    /** Wrap an `AVFrame` pointer into a `Frame`. */
     #[inline(always)]
     pub unsafe fn wrap(ptr: *mut AVFrame) -> Self {
         Frame { ptr, _own: false }
     }
 
+    /** An empty allocated `Frame`. */
     #[inline(always)]
     pub unsafe fn empty() -> Self {
         Frame {
@@ -65,16 +70,19 @@ impl Frame {
 }
 
 impl Frame {
+    /** `keyframe == 1`. */
     #[inline]
     pub fn is_key(&self) -> bool {
         unsafe { (*self.as_ptr()).key_frame == 1 }
     }
 
+    /** Does the frame contain a `CORRUPT` flag? */
     #[inline]
     pub fn is_corrupt(&self) -> bool {
         self.flags().contains(Flags::CORRUPT)
     }
 
+    /** Wrap up packet data into a `Packet` struct. */
     #[inline]
     pub fn packet(&self) -> Packet {
         unsafe {
@@ -89,6 +97,7 @@ impl Frame {
         }
     }
 
+    /** Return an optional `pts` data from a frame if it exists. */
     #[inline]
     pub fn pts(&self) -> Option<i64> {
         unsafe {
@@ -99,6 +108,8 @@ impl Frame {
         }
     }
 
+    /** Unwrap an `Option` into a value for `pts`,
+     * either `Some(x) => x` or `AV_NOPTS_VALUE`. */
     #[inline]
     pub fn set_pts(&mut self, value: Option<i64>) {
         unsafe {
@@ -106,6 +117,7 @@ impl Frame {
         }
     }
 
+    /** Get the timestamp from a frame if it exists. */
     #[inline]
     pub fn timestamp(&self) -> Option<i64> {
         unsafe {
@@ -138,6 +150,8 @@ impl Frame {
         }
     }
 
+    /** Get side data from a frame if it exists, and wrap it into a `SideData`
+     * struct. */
     #[inline]
     pub fn side_data(&self, kind: side_data::Type) -> Option<SideData> {
         unsafe {
@@ -151,6 +165,7 @@ impl Frame {
         }
     }
 
+    /** Make new side data from a frame. */
     #[inline]
     pub fn new_side_data(&mut self, kind: side_data::Type, size: usize) -> Option<SideData> {
         unsafe {

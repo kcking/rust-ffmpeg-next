@@ -31,6 +31,7 @@ impl Video {
 }
 
 impl Video {
+    /** Return an empty video frame: `Video(Frame::empty())`. */
     #[inline(always)]
     pub fn empty() -> Self {
         unsafe { Video(Frame::empty()) }
@@ -46,6 +47,7 @@ impl Video {
         }
     }
 
+    /** Return the format of a video. */
     #[inline]
     pub fn format(&self) -> format::Pixel {
         unsafe {
@@ -64,6 +66,7 @@ impl Video {
         }
     }
 
+    /** Return the type of a video. */
     #[inline]
     pub fn kind(&self) -> picture::Type {
         unsafe { picture::Type::from((*self.as_ptr()).pict_type) }
@@ -91,6 +94,7 @@ impl Video {
         unsafe { (*self.as_ptr()).palette_has_changed != 0 }
     }
 
+    /** Return the width of a video. */
     #[inline]
     pub fn width(&self) -> u32 {
         unsafe { (*self.as_ptr()).width as u32 }
@@ -103,6 +107,7 @@ impl Video {
         }
     }
 
+    /** Return the height of a video. */
     #[inline]
     pub fn height(&self) -> u32 {
         unsafe { (*self.as_ptr()).height as u32 }
@@ -115,6 +120,7 @@ impl Video {
         }
     }
 
+    /** Return the `Space` of a video. */
     #[inline]
     pub fn color_space(&self) -> color::Space {
         unsafe { color::Space::from(av_frame_get_colorspace(self.as_ptr())) }
@@ -127,6 +133,7 @@ impl Video {
         }
     }
 
+    /** Return the `Range` of a video. */
     #[inline]
     pub fn color_range(&self) -> color::Range {
         unsafe { color::Range::from(av_frame_get_color_range(self.as_ptr())) }
@@ -139,6 +146,7 @@ impl Video {
         }
     }
 
+    /** Return the `Primaries` of a video. */
     #[inline]
     pub fn color_primaries(&self) -> color::Primaries {
         unsafe { color::Primaries::from((*self.as_ptr()).color_primaries) }
@@ -151,6 +159,7 @@ impl Video {
         }
     }
 
+    /** Return the `TransferCharacteristic` of a video. */
     #[inline]
     pub fn color_transfer_characteristic(&self) -> color::TransferCharacteristic {
         unsafe { color::TransferCharacteristic::from((*self.as_ptr()).color_trc) }
@@ -163,21 +172,25 @@ impl Video {
         }
     }
 
+    /** Return the chroma `Location` of a video. */
     #[inline]
     pub fn chroma_location(&self) -> chroma::Location {
         unsafe { chroma::Location::from((*self.as_ptr()).chroma_location) }
     }
 
+    /** Return the aspect ration as a `Rational`. */
     #[inline]
     pub fn aspect_ratio(&self) -> Rational {
         unsafe { Rational::from((*self.as_ptr()).sample_aspect_ratio) }
     }
 
+    /** Return the coded picture number of a video. */
     #[inline]
     pub fn coded_number(&self) -> usize {
         unsafe { (*self.as_ptr()).coded_picture_number as usize }
     }
 
+    /** Return the display picture number of a video. */
     #[inline]
     pub fn display_number(&self) -> usize {
         unsafe { (*self.as_ptr()).display_picture_number as usize }
@@ -188,6 +201,9 @@ impl Video {
         unsafe { f64::from((*self.as_ptr()).repeat_pict) }
     }
 
+    /** Return the stride at `index`.
+     *
+     * NOTE: panics if `index >= self.planes()`. */
     #[inline]
     pub fn stride(&self, index: usize) -> usize {
         if index >= self.planes() {
@@ -197,6 +213,7 @@ impl Video {
         unsafe { (*self.as_ptr()).linesize[index] as usize }
     }
 
+    /** Return the number of planes in a video. */
     #[inline]
     pub fn planes(&self) -> usize {
         for i in 0..8 {
@@ -210,6 +227,9 @@ impl Video {
         8
     }
 
+    /** Return plane width at `index`.
+     *
+     * NOTE: panics if `index >= self.planes().` */
     #[inline]
     pub fn plane_width(&self, index: usize) -> u32 {
         if index >= self.planes() {
@@ -229,6 +249,9 @@ impl Video {
         }
     }
 
+    /** Return plane height at `index`.
+     *
+     * NOTE: panics if `index >= self.planes()`. */
     #[inline]
     pub fn plane_height(&self, index: usize) -> u32 {
         if index >= self.planes() {
@@ -248,6 +271,9 @@ impl Video {
         }
     }
 
+    /** Return the plane at `index`.
+     *
+     * NOTE: panics if `index >= self.planes()`. */
     #[inline]
     pub fn plane<T: Component>(&self, index: usize) -> &[T] {
         if index >= self.planes() {
@@ -266,6 +292,10 @@ impl Video {
         }
     }
 
+    /** Return the plane at `index` as mutable.
+     *
+     * NOTE: panics if `index >= self.planes()`
+     * OR if `!<T as Component>::is_valid(self.format())`. */
     #[inline]
     pub fn plane_mut<T: Component>(&mut self, index: usize) -> &mut [T] {
         if index >= self.planes() {
@@ -284,6 +314,7 @@ impl Video {
         }
     }
 
+    /** Get the data from a video at `index`. */
     #[inline]
     pub fn data(&self, index: usize) -> &[u8] {
         if index >= self.planes() {
@@ -298,6 +329,7 @@ impl Video {
         }
     }
 
+    /** Get the data from a video at `index` as mutable. */
     #[inline]
     pub fn data_mut(&mut self, index: usize) -> &mut [u8] {
         if index >= self.planes() {
