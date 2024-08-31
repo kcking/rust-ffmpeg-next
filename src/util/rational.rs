@@ -5,6 +5,7 @@ use std::ops::{Add, Div, Mul, Sub};
 use ffi::*;
 use libc::c_int;
 
+/** A rational number, represented as a numerator over a denominator. */
 #[derive(Copy, Clone)]
 pub struct Rational(pub i32, pub i32);
 
@@ -24,6 +25,9 @@ impl Rational {
         self.1
     }
 
+    /** Reduce with limit of `i32::max_value()`; see `reduce_with_limit()`.
+     *
+     * NOTE: Does not report if the operation is exact or not! */
     #[inline]
     pub fn reduce(&self) -> Rational {
         match self.reduce_with_limit(i32::max_value()) {
@@ -32,6 +36,10 @@ impl Rational {
         }
     }
 
+    /** Use `av_reduce()` to reduce a fraction.
+     * This is useful for framerate calculations. 
+     *
+     * Returns `Ok` if the operation is exact, and `Err` otherwise. */
     #[inline]
     pub fn reduce_with_limit(&self, max: i32) -> Result<Rational, Rational> {
         unsafe {
@@ -105,6 +113,7 @@ impl From<(i32, i32)> for Rational {
 }
 
 impl PartialEq for Rational {
+    /** NOTE: reduces both rationals to compare. */
     fn eq(&self, other: &Rational) -> bool {
         if self.0 == other.0 && self.1 == other.1 {
             return true;

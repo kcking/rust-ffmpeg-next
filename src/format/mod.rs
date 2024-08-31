@@ -53,11 +53,13 @@ pub fn license() -> &'static str {
     unsafe { from_utf8_unchecked(CStr::from_ptr(avformat_license()).to_bytes()) }
 }
 
+/** Make a `CString` from a rust `Path`. */
 // XXX: use to_cstring when stable
 fn from_path<P: AsRef<Path>>(path: &P) -> CString {
     CString::new(path.as_ref().as_os_str().to_str().unwrap()).unwrap()
 }
 
+/** Open a file with `format`. TODO: what is Context? */
 // NOTE: this will be better with specialization or anonymous return types
 pub fn open<P: AsRef<Path>>(path: &P, format: &Format) -> Result<Context, Error> {
     unsafe {
@@ -96,6 +98,9 @@ pub fn open<P: AsRef<Path>>(path: &P, format: &Format) -> Result<Context, Error>
     }
 }
 
+/** Open a file with `format` with options specified in dictionary `options`.
+ *
+ * See `open()`. */
 pub fn open_with<P: AsRef<Path>>(
     path: &P,
     format: &Format,
@@ -144,6 +149,7 @@ pub fn open_with<P: AsRef<Path>>(
     }
 }
 
+/** Open an input stream at `path`. */
 pub fn input<P: AsRef<Path>>(path: &P) -> Result<context::Input, Error> {
     unsafe {
         let mut ps = ptr::null_mut();
@@ -163,6 +169,9 @@ pub fn input<P: AsRef<Path>>(path: &P) -> Result<context::Input, Error> {
     }
 }
 
+/** Open an input with `options`.
+ *
+ * See `input()`. */
 pub fn input_with_dictionary<P: AsRef<Path>>(
     path: &P,
     options: Dictionary,
@@ -215,6 +224,7 @@ where
     }
 }
 
+/** Open an output stream at `path`. */
 pub fn output<P: AsRef<Path>>(path: &P) -> Result<context::Output, Error> {
     unsafe {
         let mut ps = ptr::null_mut();
@@ -231,6 +241,9 @@ pub fn output<P: AsRef<Path>>(path: &P) -> Result<context::Output, Error> {
     }
 }
 
+/** Open an output stream with `options`. 
+ *
+ * See `output()`. */
 pub fn output_with<P: AsRef<Path>>(
     path: &P,
     options: Dictionary,
@@ -263,6 +276,7 @@ pub fn output_with<P: AsRef<Path>>(
     }
 }
 
+/** Open output stream as `format`. */
 pub fn output_as<P: AsRef<Path>>(path: &P, format: &str) -> Result<context::Output, Error> {
     unsafe {
         let mut ps = ptr::null_mut();
@@ -285,6 +299,9 @@ pub fn output_as<P: AsRef<Path>>(path: &P, format: &str) -> Result<context::Outp
     }
 }
 
+/** Open output stream as `format` with `options`.
+ *
+ * See `output_as()`. */
 pub fn output_as_with<P: AsRef<Path>>(
     path: &P,
     format: &str,

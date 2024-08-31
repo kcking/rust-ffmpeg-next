@@ -6,8 +6,10 @@ use ffi::*;
 use format::context::common::Context;
 use {Dictionary, DictionaryMut, Rational};
 
-// WARNING: index refers to the offset in the chapters array (starting from 0)
-// it is not necessarly equal to the id (which may start at 1)
+/**
+ * WARNING: index refers to the offset in the chapters array (starting from 0)
+ * it is not necessarly equal to the id (which may start at 1)
+ */
 pub struct ChapterMut<'a> {
     context: &'a mut Context,
     index: usize,
