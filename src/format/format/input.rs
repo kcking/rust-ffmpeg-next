@@ -22,14 +22,19 @@ impl Input {
 }
 
 impl Input {
+    /** A comma separated list of short names for the format. */
     pub fn name(&self) -> &str {
         unsafe { from_utf8_unchecked(CStr::from_ptr((*self.as_ptr()).name).to_bytes()) }
     }
 
+    /** Descriptive name for the format, meant to be more human readable than the name. */
     pub fn description(&self) -> &str {
         unsafe { from_utf8_unchecked(CStr::from_ptr((*self.as_ptr()).long_name).to_bytes()) }
     }
 
+    /** If extensions are defined, then no probe is done.
+     * You should usually not use extension format guessing because it is not reliable
+     * enough. */
     pub fn extensions(&self) -> Vec<&str> {
         unsafe {
             let ptr = (*self.as_ptr()).extensions;
@@ -44,6 +49,7 @@ impl Input {
         }
     }
 
+    /** A `Vec` containing the mime types. */
     pub fn mime_types(&self) -> Vec<&str> {
         unsafe {
             let ptr = (*self.as_ptr()).mime_type;

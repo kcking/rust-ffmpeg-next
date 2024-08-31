@@ -31,10 +31,13 @@ impl Output {
         unsafe { from_utf8_unchecked(CStr::from_ptr((*self.as_ptr()).name).to_bytes()) }
     }
 
+    /** Descriptive name for the format, meant to be more human-readable than the name.
+     * AKA `long_name`. */
     pub fn description(&self) -> &str {
         unsafe { from_utf8_unchecked(CStr::from_ptr((*self.as_ptr()).long_name).to_bytes()) }
     }
 
+    /** A `Vec` containing filename extensions. */
     pub fn extensions(&self) -> Vec<&str> {
         unsafe {
             let ptr = (*self.as_ptr()).extensions;
