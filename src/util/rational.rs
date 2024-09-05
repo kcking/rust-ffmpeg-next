@@ -37,7 +37,7 @@ impl Rational {
     }
 
     /** Use `av_reduce()` to reduce a fraction.
-     * This is useful for framerate calculations. 
+     * This is useful for framerate calculations.
      *
      * Returns `Ok` if the operation is exact, and `Err` otherwise. */
     #[inline]

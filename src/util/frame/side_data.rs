@@ -38,7 +38,7 @@ pub enum Type {
     MotionVectors,
     /**
      * Reccomend skipping the specified number of samples.
-     * 
+     *
      * This is exported only if the "skip_manual" AVOption is set in
      * libavcodec. This has the same format as TODO: AV_PKT_DATA_SKIP_SAMPLES.
      */

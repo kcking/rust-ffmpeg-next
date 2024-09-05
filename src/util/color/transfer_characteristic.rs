@@ -16,10 +16,10 @@ pub enum TransferCharacteristic {
     /** Also ITU-R BT470BG. */
     GAMMA28,
     /**
-    * Also ITU-R BT601-6 525 or 625
-    * / ITU-R BT1358 525 or 625
-    * / ITU-R BT1700 NTSC.
-    */
+     * Also ITU-R BT601-6 525 or 625
+     * / ITU-R BT1358 525 or 625
+     * / ITU-R BT1700 NTSC.
+     */
     SMPTE170M,
     SMPTE240M,
     /** Linear transfer characteristics */

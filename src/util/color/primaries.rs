@@ -21,7 +21,7 @@ pub enum Primaries {
      * / ITU-R BT1700 625 PAL & SECAM.
      */
     BT470BG,
-    /** 
+    /**
      * Also ITU-R BT601-6 525 / ITU-R BT1358 525 / ITU-R BT1700 NTSC.
      */
     SMPTE170M,

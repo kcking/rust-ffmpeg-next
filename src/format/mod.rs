@@ -241,7 +241,7 @@ pub fn output<P: AsRef<Path>>(path: &P) -> Result<context::Output, Error> {
     }
 }
 
-/** Open an output stream with `options`. 
+/** Open an output stream with `options`.
  *
  * See `output()`. */
 pub fn output_with<P: AsRef<Path>>(

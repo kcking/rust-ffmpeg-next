@@ -26,7 +26,7 @@ impl<'a> Chapter<'a> {
     pub fn index(&self) -> usize {
         self.index
     }
-    
+
     /** Unique ID to identify the chapter. */
     pub fn id(&self) -> i32 {
         unsafe { (*self.as_ptr()).id }

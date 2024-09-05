@@ -83,7 +83,7 @@ pub enum Pixel {
     RGB4,
     /** packed RGB 1:2:1, 8bpp, (msb)1R 2G 1B(lsb). */
     RGB4_BYTE,
-    /** 
+    /**
      * planar YUV 4:2:0, 12bpp, 1 plane for Y and 1 plane for the UV components,
      * which are interleaved (first byte U and the following byte V).
      */
@@ -106,7 +106,7 @@ pub enum Pixel {
     GRAY16LE,
     /** planar YUV 4:4:0 (1 Cr & Cb sample per 1x2 Y samples). */
     YUV440P,
-    /** 
+    /**
      * planar YUV 4:4:0 full scale (JPEG), deprecated in favor of Pixel::YUV440P
      * and setting color_range.
      */
@@ -142,7 +142,7 @@ pub enum Pixel {
      * X=unused/undefined. */
     RGB555BE,
     /** packed RGB 5:5:5, 16bpp, (msb)1X 5R 5G 5B(lsb), little-endian,
-    * X=unused/undefined. */
+     * X=unused/undefined. */
     RGB555LE,
 
     /** packed BGR 5:6:5, 16bpp, (msb) 5B 6G 5R(lsb), big-endian. */
@@ -212,7 +212,7 @@ pub enum Pixel {
     /** packed RGB 16:16:16, 48bpp, 16B, 16G, 16R, the 2-byte value for each
      * R/G/B component is stored as big-endian. */
     BGR48BE,
-    /** 
+    /**
      * packed RGB 16:16:16, 48bpp, 16B, 16G, 16R, the 2-byte value for each
      * R/G/B component is stored as little-endian.
      */
@@ -226,7 +226,7 @@ pub enum Pixel {
      * If you want to support multiple bit depths, then using Pixel::YUV420P16*
      * with the bpp stored separately is better. planar YUV 4:2:0, 13.5bpp,
      * (1 Cr & Cb sample per 2x2 Y samples), big-endian.
-    */
+     */
     YUV420P9BE,
     /** planar YUV 4:2:0, 13.5bpp, (1 Cr & Cb sample per 2x2 Y samples),
      * little-endian. */
@@ -361,7 +361,7 @@ pub enum Pixel {
      * component is stored as big-endian.
      */
     BGRA64BE,
-    /** 
+    /**
      * packed RGBA 16:16:16:16, 64bpp, 16B, 16G, 16R, 16A, the 2-byte value for each R/G/B/A
      * component is stored as little-endian.
      */

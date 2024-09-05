@@ -23,7 +23,7 @@ use libc::{c_int, c_void};
  * linesize is the buffer size, in bytes, for a single plane. All data planes
  * must be the same size. For packed sample formats, only the first data plane
  * is used, and samples for each channel are interleaved. In this case, linesize
- * is the buffer size, in bytes, for the 1 plane. 
+ * is the buffer size, in bytes, for the 1 plane.
  */
 #[derive(Eq, PartialEq, Copy, Clone, Debug)]
 pub enum Sample {

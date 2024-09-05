@@ -5,6 +5,7 @@ use super::Ref;
 use ffi::*;
 use libc::c_int;
 
+/** Make a borrowed `AVPacket` pointer from a `&[u8]`. */
 pub struct Borrow<'a> {
     packet: AVPacket,
     data: &'a [u8],
