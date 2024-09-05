@@ -9,7 +9,12 @@ use {format, Picture};
 pub enum Rect<'a> {
     None(*const AVSubtitleRect),
     Bitmap(Bitmap<'a>),
+    /** 0 terminated plain UTF-8 text. */
     Text(Text<'a>),
+    /** 0 terminated ASS/SSA compatible event line.
+     *
+     * The presentation of this is unaffected by the other values in
+     * this struct. */
     Ass(Ass<'a>),
 }
 
@@ -46,6 +51,7 @@ impl<'a> Rect<'a> {
     }
 }
 
+/** Wrapper around a Bitmap `AVSubtitleRect` ptr. */
 pub struct Bitmap<'a> {
     ptr: *const AVSubtitleRect,
 
@@ -66,22 +72,27 @@ impl<'a> Bitmap<'a> {
 }
 
 impl<'a> Bitmap<'a> {
+    /** Top left corner of pict, undefined when pict not set. */
     pub fn x(&self) -> usize {
         unsafe { (*self.as_ptr()).x as usize }
     }
 
+    /** Top left corner of pict, undefined when pict not set. */
     pub fn y(&self) -> usize {
         unsafe { (*self.as_ptr()).y as usize }
     }
 
+    /** Width of pict. Undefined when pict not set. */
     pub fn width(&self) -> u32 {
         unsafe { (*self.as_ptr()).w as u32 }
     }
 
+    /** Height of pict. Undefined when pict not set. */
     pub fn height(&self) -> u32 {
         unsafe { (*self.as_ptr()).h as u32 }
     }
 
+    /** Number of colors in pict. Undefined when pict not set. */
     pub fn colors(&self) -> usize {
         unsafe { (*self.as_ptr()).nb_colors as usize }
     }
@@ -99,6 +110,7 @@ impl<'a> Bitmap<'a> {
     }
 }
 
+/** Wrapper around a Text `AVSubtitleRect` ptr. */
 pub struct Text<'a> {
     ptr: *const AVSubtitleRect,
 
@@ -124,6 +136,7 @@ impl<'a> Text<'a> {
     }
 }
 
+/** Wrapper around an ASS `AVSubtitleRect` ptr. */
 pub struct Ass<'a> {
     ptr: *const AVSubtitleRect,
 

@@ -5,6 +5,7 @@ use super::{Ass, Bitmap, Flags, Text, Type};
 use ffi::*;
 use libc::c_int;
 
+/** A mutable `Rect` pointer. */
 pub enum RectMut<'a> {
     None(*mut AVSubtitleRect),
     Bitmap(BitmapMut<'a>),
