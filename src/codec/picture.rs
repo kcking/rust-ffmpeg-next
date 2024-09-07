@@ -89,6 +89,7 @@ impl<'a> Picture<'a> {
         self.height
     }
 
+    /** Return size on success. Reads into pointer `out`. */
     pub fn layout(&self, out: &mut [u8]) -> Result<usize, Error> {
         unsafe {
             match avpicture_layout(
@@ -105,6 +106,7 @@ impl<'a> Picture<'a> {
         }
     }
 
+    /** Return size on success. Reads into pointer `out`. */
     pub fn layout_as(
         &self,
         format: format::Pixel,

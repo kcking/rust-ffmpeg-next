@@ -5,6 +5,7 @@ use super::{Audio, Capabilities, Id, Profile, Video};
 use ffi::*;
 use {media, Error};
 
+/** A wrapper around an `AVCodec` pointer. */
 #[derive(PartialEq, Eq, Copy, Clone)]
 pub struct Codec {
     ptr: *mut AVCodec,
@@ -36,10 +37,17 @@ impl Codec {
         unsafe { av_codec_is_decoder(self.as_ptr()) != 0 }
     }
 
+    /** Name of the codec implementation.
+     *
+     * The name is globally unique among encoders and among decoders (but an encoder and a decoder
+     * can share the same name). This is the primary way to find a codec from the user perspective.
+     */
     pub fn name(&self) -> &str {
         unsafe { from_utf8_unchecked(CStr::from_ptr((*self.as_ptr()).name).to_bytes()) }
     }
 
+    /** Description aka long_name. Meant to be more human readable
+     * than name. */
     pub fn description(&self) -> &str {
         unsafe {
             let long_name = (*self.as_ptr()).long_name;
@@ -51,6 +59,7 @@ impl Codec {
         }
     }
 
+    /** Get the media type of the codec. */
     pub fn medium(&self) -> media::Type {
         unsafe { media::Type::from((*self.as_ptr()).type_) }
     }
@@ -63,6 +72,7 @@ impl Codec {
         self.medium() == media::Type::Video
     }
 
+    /** Get the video data if it exists, otherwise error. */
     pub fn video(self) -> Result<Video, Error> {
         unsafe {
             if self.medium() == media::Type::Video {
@@ -77,6 +87,7 @@ impl Codec {
         self.medium() == media::Type::Audio
     }
 
+    /** Get the audio data if it exists, otherwise error. */
     pub fn audio(self) -> Result<Audio, Error> {
         unsafe {
             if self.medium() == media::Type::Audio {
@@ -91,6 +102,9 @@ impl Codec {
         unsafe { av_codec_get_max_lowres(self.as_ptr()) }
     }
 
+    /** Codec capabilities.
+     *
+     * See `Capabilities`. */
     pub fn capabilities(&self) -> Capabilities {
         unsafe { Capabilities::from_bits_truncate((*self.as_ptr()).capabilities as u32) }
     }

@@ -89,18 +89,21 @@ impl Decoder {
         }
     }
 
+    /** Skip loop filtering for selected frames. */
     pub fn skip_loop_filter(&mut self, value: Discard) {
         unsafe {
             (*self.as_mut_ptr()).skip_loop_filter = value.into();
         }
     }
 
+    /** Skip IDCT/dequantization for selected frames. */
     pub fn skip_idct(&mut self, value: Discard) {
         unsafe {
             (*self.as_mut_ptr()).skip_idct = value.into();
         }
     }
 
+    /** Skip decoding for selected frames. */
     pub fn skip_frame(&mut self, value: Discard) {
         unsafe {
             (*self.as_mut_ptr()).skip_frame = value.into();

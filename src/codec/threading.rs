@@ -44,7 +44,9 @@ impl Default for Config {
 #[derive(Eq, PartialEq, Clone, Copy, Debug)]
 pub enum Type {
     None,
+    /** Decode more than one frame at once. */
     Frame,
+    /** Decode more than one part of a single frame at once. */
     Slice,
 }
 

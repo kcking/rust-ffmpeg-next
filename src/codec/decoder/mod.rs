@@ -32,6 +32,7 @@ pub fn new() -> Decoder {
     Context::new().decoder()
 }
 
+/** Find a registered decoder with a matching codec ID. */
 pub fn find(id: Id) -> Option<Codec> {
     unsafe {
         let ptr = avcodec_find_decoder(id.into());
@@ -44,6 +45,7 @@ pub fn find(id: Id) -> Option<Codec> {
     }
 }
 
+/** Find a registered decoder with the specified name. */
 pub fn find_by_name(name: &str) -> Option<Codec> {
     unsafe {
         let name = CString::new(name).unwrap();
