@@ -12,6 +12,7 @@ use {frame, packet, ChannelLayout, Dictionary, Error};
 pub struct Audio(pub Super);
 
 impl Audio {
+    /** Open an audio codec and return an audio `Encoder`. */
     pub fn open(mut self) -> Result<Encoder, Error> {
         unsafe {
             match avcodec_open2(self.as_mut_ptr(), ptr::null(), ptr::null_mut()) {

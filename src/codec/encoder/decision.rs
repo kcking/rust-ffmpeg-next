@@ -3,7 +3,9 @@ use libc::c_int;
 
 #[derive(Eq, PartialEq, Clone, Copy, Debug)]
 pub enum Decision {
+    /** Uses `mb_cmp`. */
     Simple,
+    /** Chooses the one which needs the fewest bits. */
     Bits,
     RateDistortion,
 }

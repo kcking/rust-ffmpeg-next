@@ -12,6 +12,7 @@ use {color, format, frame, packet, Dictionary, Error, Rational};
 pub struct Video(pub Super);
 
 impl Video {
+    /** Open a video codec. */
     #[inline]
     pub fn open(mut self) -> Result<Encoder, Error> {
         unsafe {

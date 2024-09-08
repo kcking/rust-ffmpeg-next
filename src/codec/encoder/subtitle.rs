@@ -11,6 +11,7 @@ use {Dictionary, Error};
 pub struct Subtitle(pub Super);
 
 impl Subtitle {
+    /** Open a subtitle codec as a subtitle `Encoder`. */
     pub fn open(mut self) -> Result<Encoder, Error> {
         unsafe {
             match avcodec_open2(self.as_mut_ptr(), ptr::null(), ptr::null_mut()) {
