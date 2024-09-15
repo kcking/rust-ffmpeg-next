@@ -88,10 +88,12 @@ impl Subtitle {
         self.0.end_display_time = value;
     }
 
+    /** Get rects from subtitle. See `Rect`. */
     pub fn rects(&self) -> RectIter {
         RectIter::new(&self.0)
     }
 
+    /** Get rects from subtitle as mutable. See `RectMut`. */
     pub fn rects_mut(&mut self) -> RectMutIter {
         RectMutIter::new(&mut self.0)
     }

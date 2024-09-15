@@ -5,6 +5,13 @@ use ffi::AVCodecID::*;
 use ffi::*;
 use util::media;
 
+/**
+ * Identify the syntax and semantics of the bitstream.
+ *
+ * The principle is roughly this: two decoders with the same ID can decode the same
+ * streams. Two encoders with the same ID can encode compatible streams. There may be
+ * slight deviations from the principle due to implementation details.
+ */
 #[allow(non_camel_case_types)]
 #[derive(Eq, PartialEq, Clone, Copy, Debug)]
 pub enum Id {
@@ -12,6 +19,7 @@ pub enum Id {
 
     // video codecs
     MPEG1VIDEO,
+    /** Preferred ID for MPEG-1/2 video decoding. */
     MPEG2VIDEO,
     #[cfg(feature = "ff_api_xvmc")]
     MPEG2VIDEO_XVMC,
@@ -328,6 +336,7 @@ pub enum Id {
 
     // audio codecs
     MP2,
+    /** Preferred ID for decoding MPEG audio layer 1, 2, or 3. */
     MP3,
     AAC,
     AC3,
@@ -345,6 +354,7 @@ pub enum Id {
     SHORTEN,
     ALAC,
     WESTWOOD_SND1,
+    /** As in Berlin toast format. */
     GSM,
     QDM2,
     COOK,
@@ -417,6 +427,7 @@ pub enum Id {
     // subtitle codecs
     DVD_SUBTITLE,
     DVB_SUBTITLE,
+    /** Raw UTF-8 text. */
     TEXT,
     XSUB,
     SSA,
@@ -444,6 +455,7 @@ pub enum Id {
     // other specific kind of codecs (generally used for attachments)
     TTF,
 
+    /** Contains timestamp estimated through PCR of program stream. */
     SCTE_35,
     BINTEXT,
     XBIN,
@@ -454,11 +466,16 @@ pub enum Id {
     TIMED_ID3,
     BIN_DATA,
 
+    /** codec_id is not known (like None) but lavf should attempt to identify it. */
     PROBE,
 
+    /** FAKE codec to indicate a raw MPEG-2 TS stream (only used by libavformat). */
     MPEG2TS,
+    /** FAKE codec to indicate a MPEG-4 Systems stream (only used by libavformat). */
     MPEG4SYSTEMS,
+    /**  Dummy codec for streams containing only metadata information. */
     FFMETADATA,
+    /** Passthrough codec, AVFrames wrapped in AVPacket. */
     WRAPPED_AVFRAME,
 
     PSD,

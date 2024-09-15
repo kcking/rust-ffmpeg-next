@@ -6,49 +6,112 @@ use std::str::{from_utf8_unchecked, FromStr};
 use ffi::AVPixelFormat::*;
 use ffi::*;
 
+/**
+ * Corresponds to AVPixelFormat.
+ * Designates a pixel format.
+ */
 #[derive(Eq, PartialEq, Copy, Clone, Debug)]
 pub enum Pixel {
     None,
 
+    /** planar YUV 4:2:0, 12bpp, (1 Cr & Cb sample per 2x2 Y samples). */
     YUV420P,
+    /** packed YUV 4:2:2, 16bpp, Y0 Cb Y1 Cr. */
     YUYV422,
+    /** packed RGB 8:8:8, 24bpp, RGBRGB... */
     RGB24,
+    /** packed RGB 8:8:8, 24bpp, BGRBGR...  */
     BGR24,
+    /** planar YUV 4:2:2, 16bpp, (1 Cr & Cb sample per 2x1 Y samples). */
     YUV422P,
+    /** planar YUV 4:4:4, 24bpp, (1 Cr & Cb sample per 1x1 Y samples). */
     YUV444P,
+    /** planar YUV 4:1:0, 9bpp, (1 Cr & Cb sample per 4x4 Y samples). */
     YUV410P,
+    /** planar YUV 4:1:1, 12bpp, (1 Cr & Cb sample per 4x1 Y samples). */
     YUV411P,
+    /** Y , 8bpp. */
     GRAY8,
+    /** Y , 1bpp, 0 is white, 1 is black, in each byte pixels are ordered from
+     * the msb to the lsb. */
     MonoWhite,
+    /**
+     * Y , 1bpp, 0 is black, 1 is white, in each byte pixels are ordered from
+     * the msb to the lsb.
+     */
     MonoBlack,
+    /** 8 bits with AV_PIX_FMT_RGB32 palette. */
     PAL8,
+    /**
+     * planar YUV 4:2:0, 12bpp, full scale (JPEG), deprecated in favor of
+     * Pixel::YUV420P and setting color_range.
+     */
     YUVJ420P,
+    /**
+     * planar YUV 4:2:2, 16bpp, full scale (JPEG), deprecated in favor of
+     * Pixel::YUV422P and setting color_range.
+     */
     YUVJ422P,
+    /**
+     * planar YUV 4:4:4, 24bpp, full scale (JPEG), deprecated in favor of
+     * Pixel::YUV444P and setting color_range.
+     */
     YUVJ444P,
     #[cfg(feature = "ff_api_xvmc")]
     XVMC_MPEG2_MC,
     #[cfg(feature = "ff_api_xvmc")]
     XVMC_MPEG2_IDCT,
+    /** packed YUV 4:2:2, 16bpp, Cb Y0 Cr Y1. */
     UYVY422,
+    /** packed YUV 4:1:1, 12bpp, Cb Y0 Y1 Cr Y2 Y3. */
     UYYVYY411,
+    /** packed RGB 3:3:2, 8bpp, (msb)2B 3G 3R(lsb). */
     BGR8,
+    /**
+     * packed RGB 1:2:1 bitstream, 4bpp, (msb)1B 2G 1R(lsb), a byte contains two
+     * pixels, the first pixel in the byte is the one composed by the 4 msb bits.
+     */
     BGR4,
+    /** packed RGB 1:2:1, 8bpp, (msb)1B 2G 1R(lsb). */
     BGR4_BYTE,
+    /** packed RGB 3:3:2, 8bpp, (msb)3R 3G 2B(lsb). */
     RGB8,
+    /**
+     * packed RGB 1:2:1 bitstream, 4bpp, (msb)1R 2G 1B(lsb), a byte contains two
+     * pixels, the first pixel in the byte is the one composed by the 4 msb bits.
+     */
     RGB4,
+    /** packed RGB 1:2:1, 8bpp, (msb)1R 2G 1B(lsb). */
     RGB4_BYTE,
+    /**
+     * planar YUV 4:2:0, 12bpp, 1 plane for Y and 1 plane for the UV components,
+     * which are interleaved (first byte U and the following byte V).
+     */
     NV12,
+    /** same as Pixel::NV12, but U and V bytes are swapped. */
     NV21,
 
+    /** packed ARGB 8:8:8:8, 32bpp, ARGBARGB... */
     ARGB,
+    /** packed RGBA 8:8:8:8, 32bpp, RGBARGBA... */
     RGBA,
+    /** packed ABGR 8:8:8:8, 32bpp, ABGRABGR... */
     ABGR,
+    /** packed BGRA 8:8:8:8, 32bpp, BGRABGRA... */
     BGRA,
 
+    /** Y , 16bpp, big-endian. */
     GRAY16BE,
+    /** Y , 16bpp, little-endian. */
     GRAY16LE,
+    /** planar YUV 4:4:0 (1 Cr & Cb sample per 1x2 Y samples). */
     YUV440P,
+    /**
+     * planar YUV 4:4:0 full scale (JPEG), deprecated in favor of Pixel::YUV440P
+     * and setting color_range.
+     */
     YUVJ440P,
+    /** planar YUV 4:2:0, 20bpp, (1 Cr & Cb sample per 2x2 Y & A samples). */
     YUVA420P,
     #[cfg(feature = "ff_api_vdpau")]
     VDPAU_H264,
@@ -60,17 +123,37 @@ pub enum Pixel {
     VDPAU_WMV3,
     #[cfg(feature = "ff_api_vdpau")]
     VDPAU_VC1,
+    /**
+     * packed RGB 16:16:16, 48bpp, 16R, 16G, 16B, the 2-byte value for each R/G/B
+     * component is stored as big-endian.
+     */
     RGB48BE,
+    /**
+     * packed RGB 16:16:16, 48bpp, 16R, 16G, 16B, the 2-byte value for each R/G/B
+     * component is stored as little-endian.
+     */
     RGB48LE,
 
+    /** packed RGB 5:6:5, 16bpp, (msb) 5R 6G 5B(lsb), big-endian. */
     RGB565BE,
+    /** packed RGB 5:6:5, 16bpp, (msb) 5R 6G 5B(lsb), little-endian. */
     RGB565LE,
+    /** packed RGB 5:5:5, 16bpp, (msb)1X 5R 5G 5B(lsb), big-endian ,
+     * X=unused/undefined. */
     RGB555BE,
+    /** packed RGB 5:5:5, 16bpp, (msb)1X 5R 5G 5B(lsb), little-endian,
+     * X=unused/undefined. */
     RGB555LE,
 
+    /** packed BGR 5:6:5, 16bpp, (msb) 5B 6G 5R(lsb), big-endian. */
     BGR565BE,
+    /** packed BGR 5:6:5, 16bpp, (msb) 5B 6G 5R(lsb), little-endian. */
     BGR565LE,
+    /** packed BGR 5:5:5, 16bpp, (msb)1X 5B 5G 5R(lsb), big-endian ,
+     * X=unused/undefined. */
     BGR555BE,
+    /** packed BGR 5:5:5, 16bpp, (msb)1X 5B 5G 5R(lsb), little-endian,
+     * X=unused/undefined. */
     BGR555LE,
 
     #[cfg(feature = "ff_api_vaapi")]
@@ -80,95 +163,230 @@ pub enum Pixel {
     #[cfg(feature = "ff_api_vaapi")]
     VAAPI_VLD,
     #[cfg(not(feature = "ff_api_vaapi"))]
+    /** Hardware acceleration through VA-API. */
     VAAPI,
 
+    /** planar YUV 4:2:0, 24bpp, (1 Cr & Cb sample per 2x2 Y samples),
+     * little-endian. */
     YUV420P16LE,
+    /**
+     * planar YUV 4:2:0, 24bpp, (1 Cr & Cb sample per 2x2 Y samples), big-endian.
+     */
     YUV420P16BE,
+    /**
+     * planar YUV 4:2:2, 32bpp, (1 Cr & Cb sample per 2x1 Y samples),
+     * little-endian.
+     */
     YUV422P16LE,
+    /**
+     * planar YUV 4:2:2, 32bpp, (1 Cr & Cb sample per 2x1 Y samples), big-endian.
+     */
     YUV422P16BE,
+    /** planar YUV 4:4:4, 48bpp, (1 Cr & Cb sample per 1x1 Y samples),
+     * little-endian. */
     YUV444P16LE,
+    /**
+     * planar YUV 4:4:4, 48bpp, (1 Cr & Cb sample per 1x1 Y samples), big-endian.
+     */
     YUV444P16BE,
     #[cfg(feature = "ff_api_vdpau")]
     VDPAU_MPEG4,
+    /** HW decoding through DXVA2. */
     DXVA2_VLD,
 
+    /** packed RGB 4:4:4, 16bpp, (msb)4X 4R 4G 4B(lsb), little-endian,
+     * X=unused/undefined. */
     RGB444LE,
+    /** packed RGB 4:4:4, 16bpp, (msb)4X 4R 4G 4B(lsb), big-endian,
+     * X=unused/undefined. */
     RGB444BE,
+    /** packed BGR 4:4:4, 16bpp, (msb)4X 4B 4G 4R(lsb), little-endian,
+     * X=unused/undefined */
     BGR444LE,
+    /** packed BGR 4:4:4, 16bpp, (msb)4X 4B 4G 4R(lsb), big-endian,
+     * X=unused/undefined. */
     BGR444BE,
+    /** 8 bits gray, 8 bits alpha. */
     YA8,
 
+    /** packed RGB 16:16:16, 48bpp, 16B, 16G, 16R, the 2-byte value for each
+     * R/G/B component is stored as big-endian. */
     BGR48BE,
+    /**
+     * packed RGB 16:16:16, 48bpp, 16B, 16G, 16R, the 2-byte value for each
+     * R/G/B component is stored as little-endian.
+     */
     BGR48LE,
 
+    /**
+     * The following 12 formats have the disadvantage of needing 1 format for
+     * each bit depth.
+     *
+     * Notice that each 9/10 bits sample is stored in 16 bits with extra padding.
+     * If you want to support multiple bit depths, then using Pixel::YUV420P16*
+     * with the bpp stored separately is better. planar YUV 4:2:0, 13.5bpp,
+     * (1 Cr & Cb sample per 2x2 Y samples), big-endian.
+     */
     YUV420P9BE,
+    /** planar YUV 4:2:0, 13.5bpp, (1 Cr & Cb sample per 2x2 Y samples),
+     * little-endian. */
     YUV420P9LE,
+    /** planar YUV 4:2:0, 15bpp, (1 Cr & Cb sample per 2x2 Y samples),
+     * big-endian. */
     YUV420P10BE,
+    /** planar YUV 4:2:0, 15bpp, (1 Cr & Cb sample per 2x2 Y samples),
+     * little-endian */
     YUV420P10LE,
+    /** planar YUV 4:2:2, 20bpp, (1 Cr & Cb sample per 2x1 Y samples),
+     * big-endian. */
     YUV422P10BE,
+    /** planar YUV 4:2:2, 20bpp, (1 Cr & Cb sample per 2x1 Y samples),
+     * little-endian. */
     YUV422P10LE,
+    /** planar YUV 4:4:4, 27bpp, (1 Cr & Cb sample per 1x1 Y samples),
+     * big-endian. */
     YUV444P9BE,
+    /** planar YUV 4:4:4, 27bpp, (1 Cr & Cb sample per 1x1 Y samples),
+     * little-endian. */
     YUV444P9LE,
+    /** planar YUV 4:4:4, 30bpp, (1 Cr & Cb sample per 1x1 Y samples),
+     * big-endian. */
     YUV444P10BE,
+    /**
+     * planar YUV 4:4:4, 30bpp, (1 Cr & Cb sample per 1x1 Y samples),
+     * little-endian.
+     */
     YUV444P10LE,
+    /**
+     * planar YUV 4:2:2, 18bpp, (1 Cr & Cb sample per 2x1 Y samples), big-endian.
+     */
     YUV422P9BE,
+    /** planar YUV 4:2:2, 18bpp, (1 Cr & Cb sample per 2x1 Y samples),
+     * little-endian. */
     YUV422P9LE,
     #[cfg(not(feature = "ffmpeg_4_0"))]
     VDA_VLD,
 
+    /** planar GBR 4:4:4 24bpp. */
     GBRP,
+    /** planar GBR 4:4:4 27bpp, big-endian. */
     GBRP9BE,
+    /** planar GBR 4:4:4 27bpp, little-endian. */
     GBRP9LE,
+    /** [200~planar GBR 4:4:4 30bpp, big-endian. */
     GBRP10BE,
+    /** planar GBR 4:4:4 30bpp, little-endian. */
     GBRP10LE,
+    /** planar GBR 4:4:4 48bpp, big-endian. */
     GBRP16BE,
+    /** planar GBR 4:4:4 48bpp, little-endian. */
     GBRP16LE,
 
+    /** planar YUV 4:2:0 22.5bpp, (1 Cr & Cb sample per 2x2 Y & A samples),
+     * big-endian. */
     YUVA420P9BE,
+    /** planar YUV 4:2:0 22.5bpp, (1 Cr & Cb sample per 2x2 Y & A samples),
+     * little-endian. */
     YUVA420P9LE,
+    /** planar YUV 4:2:2 27bpp, (1 Cr & Cb sample per 2x1 Y & A samples),
+     * big-endian. */
     YUVA422P9BE,
+    /** planar YUV 4:2:2 27bpp, (1 Cr & Cb sample per 2x1 Y & A samples),
+     * little-endian. */
     YUVA422P9LE,
+    /** planar YUV 4:4:4 36bpp, (1 Cr & Cb sample per 1x1 Y & A samples),
+     * big-endian. */
     YUVA444P9BE,
+    /** planar YUV 4:4:4 36bpp, (1 Cr & Cb sample per 1x1 Y & A samples),
+     * little-endian. */
     YUVA444P9LE,
+    /** planar YUV 4:2:0 25bpp, (1 Cr & Cb sample per 2x2 Y & A samples,
+     * big-endian). */
     YUVA420P10BE,
+    /** planar YUV 4:2:0 25bpp, (1 Cr & Cb sample per 2x2 Y & A samples,
+     * little-endian). */
     YUVA420P10LE,
+    /** planar YUV 4:2:2 30bpp, (1 Cr & Cb sample per 2x1 Y & A samples,
+     * big-endian). */
     YUVA422P10BE,
+    /** planar YUV 4:2:2 30bpp, (1 Cr & Cb sample per 2x1 Y & A samples,
+     * little-endian). */
     YUVA422P10LE,
+    /** planar YUV 4:4:4 40bpp, (1 Cr & Cb sample per 1x1 Y & A samples,
+     * big-endian). */
     YUVA444P10BE,
+    /** planar YUV 4:4:4 40bpp, (1 Cr & Cb sample per 1x1 Y & A samples,
+     * little-endian). */
     YUVA444P10LE,
+    /** planar YUV 4:2:0 40bpp, (1 Cr & Cb sample per 2x2 Y & A samples, big-endian). */
     YUVA420P16BE,
+    /** planar YUV 4:2:0 40bpp, (1 Cr & Cb sample per 2x2 Y & A samples, little-endian). */
     YUVA420P16LE,
+    /** planar YUV 4:2:2 48bpp, (1 Cr & Cb sample per 2x1 Y & A samples, big-endian). */
     YUVA422P16BE,
+    /** planar YUV 4:2:2 48bpp, (1 Cr & Cb sample per 2x1 Y & A samples, little-endian). */
     YUVA422P16LE,
+    /** planar YUV 4:4:4 64bpp, (1 Cr & Cb sample per 1x1 Y & A samples, big-endian). */
     YUVA444P16BE,
+    /** planar YUV 4:4:4 64bpp, (1 Cr & Cb sample per 1x1 Y & A samples, little-endian). */
     YUVA444P16LE,
 
+    /** HW acceleration through VDPAU. */
     VDPAU,
 
+    /** packed XYZ 4:4:4, 36 bpp, (msb) 12X, 12Y, 12Z (lsb), the 2-byte value for each X/Y/Z is
+     * stored as little-endian, the 4 lower bits are set to 0. */
     XYZ12LE,
+    /** packed XYZ 4:4:4, 36 bpp, (msb) 12X, 12Y, 12Z (lsb), the 2-byte value for each X/Y/Z is
+     * stored as big-endian, the 4 lower bits are set to 0. */
     XYZ12BE,
+    /** interleaved chroma YUV 4:2:2, 16bpp, (1 Cr & Cb sample per 2x1 Y samples). */
     NV16,
+    /** interleaved chroma YUV 4:2:2, 20bpp, (1 Cr & Cb sample per 2x1 Y samples), little-endian.
+     */
     NV20LE,
+    /** interleaved chroma YUV 4:2:2, 20bpp, (1 Cr & Cb sample per 2x1 Y samples), big-endian. */
     NV20BE,
 
+    /**
+     * packed RGBA 16:16:16:16, 64bpp, 16R, 16G, 16B, 16A, the 2-byte value for each R/G/B/A
+     * component is stored as big-endian.
+     */
     RGBA64BE,
+    /** packed RGBA 16:16:16:16, 64bpp, 16R, 16G, 16B, 16A, the 2-byte value for each R/G/B/A
+     * component is stored as little-endian. */
     RGBA64LE,
+    /**
+     * packed RGBA 16:16:16:16, 64bpp, 16B, 16G, 16R, 16A, the 2-byte value for each R/G/B/A
+     * component is stored as big-endian.
+     */
     BGRA64BE,
+    /**
+     * packed RGBA 16:16:16:16, 64bpp, 16B, 16G, 16R, 16A, the 2-byte value for each R/G/B/A
+     * component is stored as little-endian.
+     */
     BGRA64LE,
 
+    /** packed YUV 4:2:2, 16bpp, Y0 Cr Y1 Cb. */
     YVYU422,
 
     #[cfg(not(feature = "ffmpeg_4_0"))]
     VDA,
 
+    /** 16 bits gray, 16 bits alpha (big-endian). */
     YA16BE,
+    /** 16 bits gray, 16 bits alpha (little-endian). */
     YA16LE,
 
+    /** HW acceleration through QSV. */
     QSV,
+    /** HW acceleration though MMAL. */
     MMAL,
 
+    /** HW decoding through Direct3D11 via old API. */
     D3D11VA_VLD,
 
+    /** HW excelleration through CUDA. */
     CUDA,
 
     ZRGB,
@@ -178,47 +396,84 @@ pub enum Pixel {
     YUVA444P,
     YUVA422P,
 
+    /** planar YUV 4:2:0,18bpp, (1 Cr & Cb sample per 2x2 Y samples), big-endian. */
     YUV420P12BE,
+    /** planar YUV 4:2:0,18bpp, (1 Cr & Cb sample per 2x2 Y samples), little-endian. */
     YUV420P12LE,
+    /** planar YUV 4:2:0,21bpp, (1 Cr & Cb sample per 2x2 Y samples), big-endian. */
     YUV420P14BE,
+    /** planar YUV 4:2:0,21bpp, (1 Cr & Cb sample per 2x2 Y samples), little-endian. */
     YUV420P14LE,
+    /** planar YUV 4:2:2,24bpp, (1 Cr & Cb sample per 2x1 Y samples), big-endian. */
     YUV422P12BE,
+    /** planar YUV 4:2:2,24bpp, (1 Cr & Cb sample per 2x1 Y samples), little-endian. */
     YUV422P12LE,
+    /** planar YUV 4:2:2,28bpp, (1 Cr & Cb sample per 2x1 Y samples), big-endian. */
     YUV422P14BE,
+    /** planar YUV 4:2:2,28bpp, (1 Cr & Cb sample per 2x1 Y samples), little-endian. */
     YUV422P14LE,
+    /** planar YUV 4:4:4,36bpp, (1 Cr & Cb sample per 1x1 Y samples), big-endian. */
     YUV444P12BE,
+    /** planar YUV 4:4:4,36bpp, (1 Cr & Cb sample per 1x1 Y samples), little-endian. */
     YUV444P12LE,
+    /** planar YUV 4:4:4,42bpp, (1 Cr & Cb sample per 1x1 Y samples), big-endian. */
     YUV444P14BE,
+    /** planar YUV 4:4:4,42bpp, (1 Cr & Cb sample per 1x1 Y samples), little-endian. */
     YUV444P14LE,
+    /** planar GBR 4:4:4 36bpp, big-endian. */
     GBRP12BE,
+    /** planar GBR 4:4:4 36bpp, little-endian. */
     GBRP12LE,
+    /** planar GBR 4:4:4 42bpp, big-endian. */
     GBRP14BE,
+    /** planar GBR 4:4:4 42bpp, little-endian. */
     GBRP14LE,
     GBRAP,
     GBRAP16BE,
     GBRAP16LE,
+    /** planar YUV 4:1:1, 12bpp, (1 Cr & Cb sample per 4x1 Y samples) full scale (JPEG), deprecated
+     * in favor of AV_PIX_FMT_YUV411P and setting color_range. */
     YUVJ411P,
 
+    /** bayer, BGBG..(odd line), GRGR..(even line), 8-bit samples. */
     BAYER_BGGR8,
+    /** bayer, RGRG..(odd line), GBGB..(even line), 8-bit samples. */
     BAYER_RGGB8,
+    /** bayer, GBGB..(odd line), RGRG..(even line), 8-bit samples. */
     BAYER_GBRG8,
+    /** bayer, GRGR..(odd line), BGBG..(even line), 8-bit samples. */
     BAYER_GRBG8,
+    /** bayer, BGBG..(odd line), GRGR..(even line), 16-bit samples, little-endian. */
     BAYER_BGGR16LE,
+    /** bayer, BGBG..(odd line), GRGR..(even line), 16-bit samples, big-endian. */
     BAYER_BGGR16BE,
+    /** bayer, RGRG..(odd line), GBGB..(even line), 16-bit samples, little-endian. */
     BAYER_RGGB16LE,
+    /** bayer, RGRG..(odd line), GBGB..(even line), 16-bit samples, big-endian. */
     BAYER_RGGB16BE,
+    /** bayer, GBGB..(odd line), RGRG..(even line), 16-bit samples, little-endian. */
     BAYER_GBRG16LE,
+    /** bayer, GBGB..(odd line), RGRG..(even line), 16-bit samples, big-endian. */
     BAYER_GBRG16BE,
+    /** bayer, GRGR..(odd line), BGBG..(even line), 16-bit samples, little-endian. */
     BAYER_GRBG16LE,
+    /** bayer, GRGR..(odd line), BGBG..(even line), 16-bit samples, big-endian. */
     BAYER_GRBG16BE,
 
+    /** planar YUV 4:4:0,20bpp, (1 Cr & Cb sample per 1x2 Y samples), little-endian. */
     YUV440P10LE,
+    /** planar YUV 4:4:0,20bpp, (1 Cr & Cb sample per 1x2 Y samples), big-endian. */
     YUV440P10BE,
+    /** planar YUV 4:4:0,24bpp, (1 Cr & Cb sample per 1x2 Y samples), little-endian. */
     YUV440P12LE,
+    /** planar YUV 4:4:0,24bpp, (1 Cr & Cb sample per 1x2 Y samples), big-endian. */
     YUV440P12BE,
+    /** packed AYUV 4:4:4,64bpp (1 Cr & Cb sample per 1x1 Y & A samples), little-endian. */
     AYUV64LE,
+    /** packed AYUV 4:4:4,64bpp (1 Cr & Cb sample per 1x1 Y & A samples), big-endian. */
     AYUV64BE,
 
+    /** hardware decoding through Videotoolbox. */
     VIDEOTOOLBOX,
 
     // --- defaults
@@ -232,10 +487,15 @@ pub enum Pixel {
     ZRGB32,
     ZBGR32,
 
+    /** Y , 16bpp, big and little endian. */
     GRAY16,
     YA16,
+    /** packed RGB 16:16:16, 48bpp, 16R, 16G, 16B, the 2-byte value for each
+     * R/G/B component is stored as big or little endian. */
     RGB48,
+    /** packed RGB 5:6:5, 16bpp, (msb) 5R 6G 5B(lsb) */
     RGB565,
+    /** packed RGB 5:5:5, 16bpp, (msb) 1X 5R 5G 5B(lsb), X=unused/undefined. */
     RGB555,
     RGB444,
     BGR48,

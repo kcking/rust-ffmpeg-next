@@ -7,6 +7,20 @@ use ffi::*;
 use libc::c_int;
 use {format, Error, Rational};
 
+/**
+ * This structure stores compressed data.
+ *
+ * It is typically exported by demuxers and then passed as input to decoders, or received as output from encoders and then passed to muxers.
+ * For video, it should typically contain one compressed frame. For audio it may contain several compressed frames. Encoders are allowed to output empty packets, with no compressed data, containing only side data (e.g. to update some stream parameters at the end of encoding).
+ *
+ * The semantics of data ownership depends on the buf field. If it is set, the packet data is dynamically allocated and is valid indefinitely until a call to av_packet_unref() reduces the reference count to 0.
+ *
+ * If the buf field is not set av_packet_ref() would make a copy instead of increasing the reference count.
+ *
+ * The side data is always allocated with av_malloc(), copied by av_packet_ref() and freed by av_packet_unref().
+ *
+ * sizeof(AVPacket) being a part of the public ABI is deprecated. once av_init_packet() is removed, new packets will only be able to be allocated with av_packet_alloc(), and new fields may be added to the end of the struct with a minor bump.
+ */
 pub struct Packet(AVPacket);
 
 unsafe impl Send for Packet {}
@@ -117,6 +131,7 @@ impl Packet {
         self.0.stream_index = index as c_int;
     }
 
+    /** Get pts if value exists. */
     #[inline]
     pub fn pts(&self) -> Option<i64> {
         match self.0.pts {

@@ -37,6 +37,7 @@ impl Audio {
         }
     }
 
+    /** aka `sample_rate`. */
     pub fn rate(&self) -> u32 {
         unsafe { (*self.as_ptr()).sample_rate as u32 }
     }
@@ -45,20 +46,24 @@ impl Audio {
         unsafe { (*self.as_ptr()).channels as u16 }
     }
 
+    /** aka `sample_fmt`. */
     pub fn format(&self) -> format::Sample {
         unsafe { format::Sample::from((*self.as_ptr()).sample_fmt) }
     }
 
+    /** aka `request_sample_fmt`. */
     pub fn request_format(&mut self, value: format::Sample) {
         unsafe {
             (*self.as_mut_ptr()).request_sample_fmt = value.into();
         }
     }
 
+    /** aka `frame_number`. */
     pub fn frames(&self) -> usize {
         unsafe { (*self.as_ptr()).frame_number as usize }
     }
 
+    /** aka `block_align`. */
     pub fn align(&self) -> usize {
         unsafe { (*self.as_ptr()).block_align as usize }
     }
@@ -79,10 +84,12 @@ impl Audio {
         }
     }
 
+    /** aka `audio_service_type`. */
     pub fn audio_service(&mut self) -> AudioService {
         unsafe { AudioService::from((*self.as_mut_ptr()).audio_service_type) }
     }
 
+    /** aka `rc_max_rate`. */
     pub fn max_bit_rate(&self) -> usize {
         unsafe { (*self.as_ptr()).rc_max_rate as usize }
     }
@@ -91,6 +98,7 @@ impl Audio {
         unsafe { (*self.as_ptr()).frame_size as u32 }
     }
 
+    /** aka `timecode_frame_start`. */
     pub fn frame_start(&self) -> Option<usize> {
         unsafe {
             match (*self.as_ptr()).timecode_frame_start {

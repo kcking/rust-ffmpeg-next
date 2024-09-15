@@ -1,13 +1,21 @@
 use ffi::AVRounding::*;
 use ffi::*;
 
+/** How to round? */
 #[derive(Eq, PartialEq, Clone, Copy, Debug)]
 pub enum Rounding {
+    /** Round towards zero. */
     Zero,
+    /** Round away from zero. */
     Infinity,
+    /** Round toward -infinity. */
     Down,
+    /** Round toward +infinity. */
     Up,
+    /** Round to the nearest and halfway cases away from zero. */
     NearInfinity,
+    /** Flag telling rescaling functions to pass `INT64_MIN/MAX` through unchanged,
+     * avoiding special cases for `AV_NOPTS_VALUE` (aka `None` in rust). */
     PassMinMax,
 }
 

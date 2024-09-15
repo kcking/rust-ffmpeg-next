@@ -6,25 +6,49 @@ use ffi::*;
 
 #[derive(PartialEq, Eq, Copy, Clone, Debug)]
 pub enum Type {
+    /** Underlying C type is `unsigned int`. */
     Flags,
+    /** Underlying C type is `int`. */
     Int,
+    /** Underlying C type is `int64_t`. */
     Int64,
+    /** Underlying C type is `double`. */
     Double,
+    /** Underlying C type is `float`. */
     Float,
+    /** Underlying C type is a `uint8_t*` that is either `NULL` or points to a C
+     * string allocated with the `av_malloc()` family of functions. */
     String,
+    /** Underlying C type is `AVRational` aka `Rational`. */
     Rational,
+    /** Underlying C type is a `uint8_t*` that is either `NULL` or points to an
+     * array allocated with the `av_malloc()` family of functions.
+     *
+     * The pointer is immediately followed by an int containing the array length
+     * in bytes. */
     Binary,
+    /** Underlying C type is `AVDictionary` aka `Dictionary`. */
     Dictionary,
+    /** Underlying C type is `uint64_t`. */
     Constant,
 
+    /** Underlying C type is two consecutive integers. */
     ImageSize,
+    /** Underlying C type is `AVPixelFormat` aka `Pixel`. */
     PixelFormat,
+    /** Underlying C type is `AVSampleFormat` aka `Sample`. */
     SampleFormat,
+    /** Underlying C type is `AVRational` aka `Rational`. */
     VideoRate,
+    /** Underlying C type is `int64_t`. */
     Duration,
+    /** Underlying C type is `uint8_t[4]`. */
     Color,
+    /** Underlying C type is `AVChannelLayout`. */
     ChannelLayout,
+    /** Underlying C type is `unsigned int`. */
     c_ulong,
+    /** Underlying C type is `int`. */
     bool,
 }
 

@@ -5,6 +5,7 @@ use ffi::*;
 use libc::c_void;
 use {format, option, ChannelLayout};
 
+/** An instance of a filter. */
 pub struct Context<'a> {
     ptr: *mut AVFilterContext,
 

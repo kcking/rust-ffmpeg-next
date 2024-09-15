@@ -4,6 +4,7 @@ use super::codec::Codec;
 use ffi::*;
 use {format, ChannelLayout};
 
+/** An audio codec. */
 #[derive(PartialEq, Eq, Copy, Clone)]
 pub struct Audio {
     codec: Codec,

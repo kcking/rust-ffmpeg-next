@@ -3,6 +3,7 @@ use std::convert::TryFrom;
 use ffi::*;
 use libc::c_int;
 
+/** Represents the level of logging to perform. */
 #[derive(Eq, PartialEq, Clone, Copy, Debug)]
 pub enum Level {
     Quiet,

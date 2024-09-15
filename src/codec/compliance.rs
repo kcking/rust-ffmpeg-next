@@ -3,10 +3,16 @@ use libc::c_int;
 
 #[derive(Eq, PartialEq, Clone, Copy, Debug)]
 pub enum Compliance {
+    /** Strictly conform to an older more strict version of the spec
+     * or reference software. */
     VeryStrict,
+    /** Strictly conform to all the things in the spec no matter
+     * what consequences. */
     Strict,
     Normal,
+    /** Allow unofficial extensions. */
     Unofficial,
+    /** Allow nonstandardized experimental things. */
     Experimental,
 }
 

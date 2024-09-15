@@ -3,7 +3,9 @@ use sys::SwrEngine::*;
 
 #[derive(Eq, PartialEq, Copy, Clone, Debug)]
 pub enum Engine {
+    /** Software resampler. */
     Software,
+    /** SoX resampler. */
     SoundExchange,
 }
 

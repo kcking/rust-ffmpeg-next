@@ -9,6 +9,7 @@ use {media, packet, Error, Frame, Rational};
 pub struct Opened(pub Decoder);
 
 impl Opened {
+    /** Return a video if the opened decoder is a video. Otherwise error. */
     pub fn video(self) -> Result<Video, Error> {
         if self.medium() == media::Type::Video {
             Ok(Video(self))
@@ -17,6 +18,7 @@ impl Opened {
         }
     }
 
+    /** Return an audio if the opened decoder is an audio. Otherwise error. */
     pub fn audio(self) -> Result<Audio, Error> {
         if self.medium() == media::Type::Audio {
             Ok(Audio(self))
@@ -25,6 +27,7 @@ impl Opened {
         }
     }
 
+    /** Return a subtitle if the opened decoder is a subtitle. Otherwise error. */
     pub fn subtitle(self) -> Result<Subtitle, Error> {
         if self.medium() == media::Type::Subtitle {
             Ok(Subtitle(self))

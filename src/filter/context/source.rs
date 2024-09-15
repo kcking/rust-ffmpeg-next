@@ -19,6 +19,7 @@ impl<'a> Source<'a> {
         unsafe { av_buffersrc_get_nb_failed_requests(self.ctx.as_ptr() as *mut _) as usize }
     }
 
+    /** aka `av_buffersrc_add_frame()`. */
     pub fn add(&mut self, frame: &Frame) -> Result<(), Error> {
         unsafe {
             match av_buffersrc_add_frame(self.ctx.as_mut_ptr(), frame.as_ptr() as *mut _) {

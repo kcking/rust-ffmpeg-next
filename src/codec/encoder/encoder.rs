@@ -11,6 +11,7 @@ use {media, packet, Error, Frame, Rational};
 pub struct Encoder(pub Context);
 
 impl Encoder {
+    /** Turn an encoder into a `Video` if it contains video data. */
     pub fn video(mut self) -> Result<video::Video, Error> {
         match self.medium() {
             media::Type::Unknown => {
@@ -27,6 +28,7 @@ impl Encoder {
         }
     }
 
+    /** Turn an encoder into an `Audio` if it contains audio data. */
     pub fn audio(mut self) -> Result<audio::Audio, Error> {
         match self.medium() {
             media::Type::Unknown => {
@@ -43,6 +45,7 @@ impl Encoder {
         }
     }
 
+    /** Turn an encoder into a `Subtitle` if it contains subtitle data. */
     pub fn subtitle(mut self) -> Result<subtitle::Subtitle, Error> {
         match self.medium() {
             media::Type::Unknown => {
@@ -59,6 +62,7 @@ impl Encoder {
         }
     }
 
+    /** Supply a video or audio frame to the encoder. */
     pub fn send_frame(&mut self, frame: &Frame) -> Result<(), Error> {
         unsafe {
             match avcodec_send_frame(self.as_mut_ptr(), frame.as_ptr()) {
@@ -74,6 +78,7 @@ impl Encoder {
         unsafe { self.send_frame(&Frame::wrap(ptr::null_mut())) }
     }
 
+    /** Read encoded data from the encoder. */
     pub fn receive_packet<P: packet::Mut>(&mut self, packet: &mut P) -> Result<(), Error> {
         unsafe {
             match avcodec_receive_packet(self.as_mut_ptr(), packet.as_mut_ptr()) {

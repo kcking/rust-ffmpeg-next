@@ -10,6 +10,7 @@ use libc::c_int;
 use media;
 use {Codec, Error};
 
+/** Main external API structure. */
 pub struct Context {
     ptr: *mut AVCodecContext,
     owner: Option<Rc<dyn Any>>,

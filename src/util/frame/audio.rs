@@ -12,11 +12,13 @@ use ChannelLayout;
 pub struct Audio(Frame);
 
 impl Audio {
+    /** Wrap an `AVFrame` into a `Frame` inside `Audio`. */
     #[inline(always)]
     pub unsafe fn wrap(ptr: *mut AVFrame) -> Self {
         Audio(Frame::wrap(ptr))
     }
 
+    /** Call `av_frame_get_buffer()` to allocate the `Audio` frame. */
     #[inline]
     pub unsafe fn alloc(&mut self, format: format::Sample, samples: usize, layout: ChannelLayout) {
         self.set_format(format);
@@ -28,11 +30,13 @@ impl Audio {
 }
 
 impl Audio {
+    /** An empty `Audio`: `Audio(Frame::empty())`. */
     #[inline(always)]
     pub fn empty() -> Self {
         unsafe { Audio(Frame::empty()) }
     }
 
+    /** Create an empty frame and allocate it. */
     #[inline]
     pub fn new(format: format::Sample, samples: usize, layout: ChannelLayout) -> Self {
         unsafe {
@@ -43,6 +47,7 @@ impl Audio {
         }
     }
 
+    /** Return the format `Sample`. */
     #[inline]
     pub fn format(&self) -> format::Sample {
         unsafe {
@@ -77,6 +82,7 @@ impl Audio {
         }
     }
 
+    /** Return the number of channels in the audio. */
     #[inline]
     pub fn channels(&self) -> u16 {
         unsafe { av_frame_get_channels(self.as_ptr()) as u16 }
@@ -89,6 +95,7 @@ impl Audio {
         }
     }
 
+    /** Return the sample rate of some audio. */
     #[inline]
     pub fn rate(&self) -> u32 {
         unsafe { av_frame_get_sample_rate(self.as_ptr()) as u32 }
@@ -101,6 +108,7 @@ impl Audio {
         }
     }
 
+    /** Return the number of samples (`nb_samples`) in some audio. */
     #[inline]
     pub fn samples(&self) -> usize {
         unsafe { (*self.as_ptr()).nb_samples as usize }
@@ -123,6 +131,7 @@ impl Audio {
         self.format().is_packed()
     }
 
+    /** Return the number of planes in some audio. */
     #[inline]
     pub fn planes(&self) -> usize {
         unsafe {
@@ -138,6 +147,10 @@ impl Audio {
         }
     }
 
+    /** Return the plane at `index`.
+     *
+     * NOTE: panics if `index >= self.planes()`
+     * OR if `!<T as Sample>::is_valid(self.format(), self.channels())`. */
     #[inline]
     pub fn plane<T: Sample>(&self, index: usize) -> &[T] {
         if index >= self.planes() {
@@ -150,6 +163,11 @@ impl Audio {
 
         unsafe { slice::from_raw_parts((*self.as_ptr()).data[index] as *const T, self.samples()) }
     }
+
+    /** Return the plane at `index` as mutable.
+     *
+     * NOTE: panics if `index >= self.planes()`
+     * OR if `!<T as Sample>::is_valid(self.format(), self.channels())`. */
 
     #[inline]
     pub fn plane_mut<T: Sample>(&mut self, index: usize) -> &mut [T] {
@@ -166,6 +184,9 @@ impl Audio {
         }
     }
 
+    /** Return the data at `index`.
+     *
+     * NOTE: panics if `index >= self.planes()`. */
     #[inline]
     pub fn data(&self, index: usize) -> &[u8] {
         if index >= self.planes() {
@@ -180,6 +201,9 @@ impl Audio {
         }
     }
 
+    /** Return the data at `index` as mutable.
+     *
+     * NOTE: panics if `index >= self.planes()`. */
     #[inline]
     pub fn data_mut(&mut self, index: usize) -> &mut [u8] {
         if index >= self.planes() {

@@ -10,6 +10,7 @@ use {packet, Error};
 pub struct Subtitle(pub Opened);
 
 impl Subtitle {
+    /** Decode a subtitle message. */
     pub fn decode<P: packet::Ref>(
         &mut self,
         packet: &P,

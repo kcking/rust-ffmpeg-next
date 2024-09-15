@@ -3,11 +3,14 @@ use ffi::*;
 
 #[derive(Eq, PartialEq, Clone, Copy, Debug)]
 pub enum Type {
+    /** Usually treated as `Data`. */
     Unknown,
     Video,
     Audio,
+    /** Opaque data information. Usually continuous. */
     Data,
     Subtitle,
+    /** Opaque data information. Usually sparse. */
     Attachment,
 }
 

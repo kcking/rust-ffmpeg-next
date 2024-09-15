@@ -6,6 +6,7 @@ use std::ptr;
 use super::mutable;
 use ffi::*;
 
+/** An owned *mutable* `Ref`. */
 pub struct Owned<'a> {
     inner: mutable::Ref<'a>,
 }
@@ -23,6 +24,8 @@ impl<'a> Owned<'a> {
         }
     }
 
+    /** Fetch the internal `*mut` pointer. Set the internal pointer of `self`
+     * to `ptr::null_mut()`. Return the original `*mut AVDictionary`. */
     pub unsafe fn disown(mut self) -> *mut AVDictionary {
         let result = self.inner.as_mut_ptr();
         self.inner = mutable::Ref::wrap(ptr::null_mut());
@@ -32,6 +35,7 @@ impl<'a> Owned<'a> {
 }
 
 impl<'a> Owned<'a> {
+    /** Make a new `mutable::Ref` from `ptr::null_mut()`. */
     pub fn new() -> Self {
         unsafe {
             Owned {
@@ -40,6 +44,8 @@ impl<'a> Owned<'a> {
         }
     }
 }
+
+/* TODO: do these need documentation? are they self explanatory? */
 
 impl<'a, 'b> FromIterator<(&'b str, &'b str)> for Owned<'a> {
     fn from_iter<T: IntoIterator<Item = (&'b str, &'b str)>>(iterator: T) -> Self {

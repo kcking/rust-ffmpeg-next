@@ -8,6 +8,7 @@ use std::str::from_utf8_unchecked;
 
 use ffi::*;
 
+/** Structure describing the basic parameters of a device. */
 pub struct Info<'a> {
     ptr: *mut AVDeviceInfo,
 

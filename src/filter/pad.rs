@@ -5,6 +5,7 @@ use std::str::from_utf8_unchecked;
 use ffi::*;
 use media;
 
+/** A filter pad used for either input or output. */
 pub struct Pad<'a> {
     ptr: *const AVFilterPad,
     idx: isize,

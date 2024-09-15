@@ -10,22 +10,60 @@ use DictionaryRef;
 
 #[derive(Eq, PartialEq, Copy, Clone, Debug)]
 pub enum Type {
+    /** The data is the AVPanScan struct defined in libavcodec. */
     PanScan,
+    /** ATSC A53 Part 4 Closed Captions. */
     A53CC,
+    /** Stereoscopic 3d metadata. */
     Stereo3D,
     MatrixEncoding,
+    /** Metadata relevant to a downmix procedure. */
     DownMixInfo,
+    /** Replay gani information in the form of the AVReplayGain struct. */
     ReplayGain,
+    /**
+     * This side data contains a 3x3 transformation matrix describing
+     * an affine transformation that needs to be applied to the frame
+     * for correct presentation.
+     *
+     * See libavutil/display.h for a detailed description of the data.
+     */
     DisplayMatrix,
+    /** Active Format Description data consisting of a single byte. */
     AFD,
+    /**
+     * Motion vectors exported by some codecs (on demand through the
+     * export_mvs flag set in libavcodec CodecContext flags2 option).
+     */
     MotionVectors,
+    /**
+     * Reccomend skipping the specified number of samples.
+     *
+     * This is exported only if the "skip_manual" AVOption is set in
+     * libavcodec. This has the same format as TODO: AV_PKT_DATA_SKIP_SAMPLES.
+     */
     SkipSamples,
+    /**
+     * This side data must be associated with an audio frame and
+     * corresponds to the enum audio::audio_service::AudioService.
+     */
     AudioServiceType,
+    /** Mastering display metadata associated with a video frame. */
     MasteringDisplayMetadata,
+    /** The GOP timecode in 25-bit timecode format.
+     *
+     * Data format is 64-bit integer. This is set on the first frame
+     * of a GOP that has a temporal reference of 0.
+     */
     GOPTimecode,
+    /** The data represents TODO: AVSphericalMapping. */
     Spherical,
 
+    /** Content light level (based on CTA-861.3). */
     ContentLightLevel,
+    /** The data contains an ICC profile as an opaque octet buffer
+     * following the same format described by ISO 15076-1 with an
+     * optional name defined in the metadata key entry "name". */
     IccProfile,
 
     #[cfg(feature = "ffmpeg_4_0")]
@@ -42,9 +80,14 @@ pub enum Type {
     REGIONS_OF_INTEREST,
 
     #[cfg(feature = "ffmpeg_4_3")]
+    /** Encoding parameters for a video frame, as described by TODO:
+     * AVVideoEncParams. */
     VIDEO_ENC_PARAMS,
 
     #[cfg(feature = "ffmpeg_4_4")]
+    /**
+     * User data unregistered metadata associated with a video frame.
+     */
     SEI_UNREGISTERED,
     #[cfg(feature = "ffmpeg_4_4")]
     FILM_GRAIN_PARAMS,

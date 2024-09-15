@@ -3,13 +3,21 @@ use ffi::*;
 
 #[derive(Eq, PartialEq, Clone, Copy, Debug)]
 pub enum Type {
+    /** Undefined. */
     None,
+    /** Intra. */
     I,
+    /** Predicted. */
     P,
+    /** Bi-dir predicted. */
     B,
+    /** S(GMC)-VOP MPEG-4. */
     S,
+    /** Switching intra. */
     SI,
+    /** Switching predicted. */
     SP,
+    /** BI type. */
     BI,
 }
 

@@ -5,6 +5,7 @@ use super::{Context, Id};
 use ffi::*;
 use media;
 
+/** This struct describes the properties of an encoded stream. */
 pub struct Parameters {
     ptr: *mut AVCodecParameters,
     owner: Option<Rc<dyn Any>>,
@@ -36,6 +37,7 @@ impl Parameters {
         }
     }
 
+    /** Get the media type from the codec. */
     pub fn medium(&self) -> media::Type {
         unsafe { media::Type::from((*self.as_ptr()).codec_type) }
     }

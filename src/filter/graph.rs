@@ -78,6 +78,7 @@ impl Graph {
         }
     }
 
+    /** Get a filter as a `Context`. */
     pub fn get<'a, 'b>(&'b mut self, name: &str) -> Option<Context<'b>>
     where
         'a: 'b,

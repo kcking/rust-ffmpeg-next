@@ -8,6 +8,7 @@ use ffi::*;
 use libc::{c_int, c_uint};
 use {media, Chapter, ChapterMut, DictionaryRef, Stream, StreamMut};
 
+/** Wrapper around an `AVFormatContext` struct. */
 pub struct Context {
     ptr: *mut AVFormatContext,
     dtor: Rc<Destructor>,

@@ -4,6 +4,7 @@ use super::codec::Codec;
 use ffi::*;
 use {format, Rational};
 
+/** A video codec. */
 #[derive(PartialEq, Eq, Copy, Clone)]
 pub struct Video {
     codec: Codec,

@@ -5,9 +5,13 @@ use ffi::*;
 pub enum FieldOrder {
     Unknown,
     Progressive,
+    /** Top coded_first, top displayed first. */
     TT,
+    /** Bottom coded first, bottom displayed first. */
     BB,
+    /** Top coded first, bottom displayed first. */
     TB,
+    /** Bottom coded first, top displayed first. */
     BT,
 }
 
