@@ -4,7 +4,9 @@ use ffi::*;
 #[derive(Eq, PartialEq, Copy, Clone, Debug)]
 pub enum Filter {
     Cubic,
+    /** Blackman Nuttall windowed sinc. */
     BlackmanNuttall,
+    /** Kaiser windowed sinc. */
     Kaiser,
 }
 
